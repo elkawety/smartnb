@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مترجم HTML بالعربية</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            background-color: #1e1e2f;
+            color: #fff;
+        }
+
+        .sidebar {
+            width: 20%;
+            background-color: #282a36;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            color: #50fa7b;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #44475a;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar ul li:hover {
+            background-color: #6272a4;
+        }
+
+        .main-content {
+            width: 80%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor {
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            font-size: 16px;
+            padding: 10px;
+            border: 1px solid #6272a4;
+            border-radius: 5px;
+            resize: none;
+            background-color: #282a36;
+            color: #f8f8f2;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .buttons button {
+            flex: 1;
+            padding: 10px;
+            background-color: #50fa7b;
+            color: #282a36;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .buttons button:hover {
+            background-color: #69ff94;
+        }
+
+        .output {
+            padding: 20px;
+            background-color: #44475a;
+            border: 1px solid #6272a4;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            color: #50fa7b;
+        }
+
+        .output h3 {
+            margin: 0 0 10px 0;
+        }
+
+        pre {
+            margin: 0;
+            background-color: #1e1e2f;
+            color: #f8f8f2;
+            padding: 10px;
+            border-radius: 5px;
+            overflow: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <h2>الأوامر</h2>
+        <ul>
+            <li data-command="عنوان رئيسي: ">عنوان رئيسي</li>
+            <li data-command="عنوان فرعي: ">عنوان فرعي</li>
+            <li data-command="فقرة: ">فقرة</li>
+            <li data-command="رابط: 'رابط هنا'">رابط</li>
+            <li data-command="صورة: 'رابط الصورة'">صورة</li>
+            <li data-command="صوت: 'رابط الصوت'">صوت</li>
+            <li data-command="بدء: 'auto'">بدء</li>
+            <li data-command="قابل للتعديل: 'true'">قابل للتعديل</li>
+            <li data-command="مطلوب">مطلوب</li>
+            <li data-command="تحديد: 'نص'">تحديد</li>
+            <li data-command="تحميل بطيء: 'lazy'">تحميل بطيء</li>
+            <li data-command="مفتاح: 'نص المفتاح'">مفتاح</li>
+            <li data-command="تفاصيل وملخص">تفاصيل + ملخص</li>
+            <li data-command="قبول: 'image/png'">قبول</li>
+            <li data-command="صورة متعددة المصادر">صورة متعددة المصادر</li>
+            <li data-command="اتجاه النص: 'rtl'">اتجاه النص</li>
+            <li data-command="التدقيق الإملائي: 'true'">التدقيق الإملائي</li>
+            <li data-command="اختصار: 'النص'">اختصار</li>
+            <li data-command="معطل">معطل</li>
+            <li data-command="صورة الغلاف: 'poster.jpg'">صورة الغلاف</li>
+            <li data-command="قائمة مرقمة: ">قائمة مرقمة</li>
+            <li data-command="قائمة منقطة: ">قائمة منقطة</li>
+            <li data-command="إدخال نص: '>input type=text'">إدخال نص</li>
+            <li data-command="إدخال بريد إلكتروني: '>input type=email'">إدخال بريد إلكتروني</li>
+            <li data-command="إدخال رقم: '>input type=number'">إدخال رقم</li>
+            <li data-command="إطار: '>iframe'">إطار</li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="editor">
+            <textarea id="editor" placeholder="اكتب الأوامر بالعربية هنا..."></textarea>
+        </div>
+        <div class="buttons">
+            <button id="convert">ترجمة</button>
+            <button id="checkErrors">كشف الأخطاء</button>
+            <button id="fixErrors">إصلاح الأخطاء</button>
+        </div>
+        <div class="output">
+            <h3>الكود المترجم:</h3>
+            <pre id="output"></pre>
+        </div>
+    </div>
+
+    <script>
+        // إضافة النصوص إلى محرر النصوص عند النقر
+        document.querySelectorAll('.sidebar ul li').forEach(item => {
+            item.addEventListener('click', function () {
+                const command = this.getAttribute('data-command');
+                const editor = document.getElementById('editor');
+                editor.value += command + '\n';
+            });
+        });
+
+        // ترجمة الكود العربي إلى HTML
+        document.getElementById('convert').addEventListener('click', function () {
+            const input = document.getElementById('editor').value;
+            const output = document.getElementById('output');
+
+            // استبدال النصوص العربية بالكود المكافئ في HTML
+            let translated = input
+                .replace(/عنوان رئيسي:/g, '<h1>')
+                .replace(/عنوان فرعي:/g, '<h2>')
+                .replace(/فقرة:/g, '<p>')
+                .replace(/رابط:/g, '<a href>')
+                .replace(/صورة:/g, '<img src>')
+                .replace(/صوت:/g, '<audio src>')
+                .replace(/بدء:/g, 'start="auto"')
+                .replace(/قابل للتعديل:/g, 'contenteditable="true"')
+                .replace(/مطلوب/g, 'required')
+                .replace(/تحديد:/g, '<mark>')
+                .replace(/تحميل بطيء:/g, 'loading="lazy"')
+                .replace(/مفتاح:/g, '<kbd>')
+                .replace(/تفاصيل وملخص/g, '<details><summary>ملخص</summary></details>')
+                .replace(/قبول:/g, 'accept="image/png"')
+                .replace(/صورة متعددة المصادر/g, '<picture><source src="image1.jpg"><img src="fallback.jpg" alt="صورة"></picture>')
+                .replace(/اتجاه النص:/g, 'dir="rtl"')
+                .replace(/التدقيق الإملائي:/g, 'spellcheck="true"')
+                .replace(/اختصار:/g, '<abbr>')
+                .replace(/معطل/g, 'disabled')
+                .replace(/صورة الغلاف:/g, 'poster="poster.jpg"')
+                .replace(/قائمة مرقمة:/g, '<ol><li>')
+                .replace(/قائمة منقطة:/g, '<ul><li>')
+                .replace(/إدخال نص:/g, '<input type="text">')
+                .replace(/إدخال بريد إلكتروني:/g, '<input type="email">')
+                .replace(/إدخال رقم:/g, '<input type="number">')
+                .replace(/إطار:/g, '<iframe src="your-url"></iframe>');
+
+            output.textContent = translated;
+        });
+
+        // كشف الأخطاء
+        document.getElementById('checkErrors').addEventListener('click', function () {
+            const input = document.getElementById('editor').value;
+            let errors = [];
+            if (!input.trim()) {
+                errors.push('الكود فارغ.');
+            }
+            document.getElementById('output').textContent = errors.length ? errors.join('\n') : "لا توجد أخطاء.";
+        });
+
+        // إصلاح الأخطاء
+        document.getElementById('fixErrors').addEventListener('click', function () {
+            const input = document.getElementById('editor').value.trim();
+            document.getElementById('editor').value = input.replace(/\s+/g, ' ');
+            document.getElementById('output').textContent = "تم إصلاح الأخطاء!";
+        });
+    </script>
+
+</body>
+
+</html>

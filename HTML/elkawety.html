@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مترجم HTML بالعربية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* ليلي */
+        .dark-mode {
+            background-color: #1e1e2f;
+            color: #ececeb;
+        }
+
+        /* نهاري */
+        .light-mode {
+            background-color: #fcfff8;
+            color: #333;
+        }
+
+        .sidebar {
+            width: 20%;
+            background-color: #282a36;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            color: #50fa7b;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #44475a;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar ul li:hover {
+            background-color: #6272a4;
+        }
+
+        .sidebar ul li i {
+            color: #7992ff;
+        }
+
+        .main-content {
+            width: 80%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor {
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            font-size: 16px;
+            padding: 10px;
+            border: 1px solid #6272a4;
+            border-radius: 5px;
+            resize: none;
+            background-color: #282a36;
+            color: #f8f8f2;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .buttons button {
+            flex: 1;
+            padding: 10px;
+            background-color: #50fa7b;
+            color: #282a36;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .buttons button:hover {
+            background-color: #69ff94;
+        }
+
+        .output {
+            padding: 20px;
+            background-color: #44475a;
+            border: 1px solid #6272a4;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            color: #50fa7b;
+            position: relative;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .output h3 {
+            margin: 0 0 10px 0;
+        }
+
+        pre {
+            margin: 0;
+            background-color: #1e1e2f;
+            color: #f8f8f2;
+            padding: 10px;
+            border-radius: 5px;
+            overflow: auto;
+        }
+
+        .output .copy-btn,
+        .output .download-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 8px 12px;
+            background-color: #50fa7b;
+            color: #282a36;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .output .copy-btn:hover,
+        .output .download-btn:hover {
+            background-color: #69ff94;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px;
+            background-color: #141413;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .theme-toggle:hover {
+            background-color: #7f48ff;
+        }
+    </style>
+</head>
+
+<body class="dark-mode">
+
+    <button class="theme-toggle" id="themeToggle">وضع</button>
+
+    <div class="sidebar">
+        <h2>html للغة</h2>
+        <ul>
+            <li data-command="عنوان رئيسي"><i class="fas fa-heading"></i> عنوان رئيسي</li>
+            <li data-command="فقرة"><i class="fas fa-paragraph"></i> فقرة</li>
+            <li data-command="رابط: 'رابط هنا'"><i class="fas fa-link"></i> رابط</li>
+            <li data-command="صورة: 'رابط الصورة'"><i class="fas fa-image"></i> صورة</li>
+            <li data-command="صوت: 'رابط الصوت'"><i class="fas fa-volume-up"></i> صوت</li>
+            <li data-command="بدء: 'auto'"><i class="fas fa-play-circle"></i> بدء</li>
+            <li data-command="قابل للتعديل: 'true'"><i class="fas fa-edit"></i> قابل للتعديل</li>
+            <li data-command="مطلوب"><i class="fas fa-check-circle"></i> مطلوب</li>
+            <li data-command="تحديد: 'نص'"><i class="fas fa-tag"></i> تحديد</li>
+            <li data-command="تحميل بطيء: 'lazy'"><i class="fas fa-download"></i> تحميل بطيء</li>
+            <li data-command="مفتاح: 'نص المفتاح'"><i class="fas fa-keyboard"></i> مفتاح</li>
+            <li data-command="تفاصيل وملخص"><i class="fas fa-caret-down"></i> تفاصيل + ملخص</li>
+            <li data-command="قبول: 'image/png'"><i class="fas fa-check"></i> قبول</li>
+            <li data-command="صورة متعددة المصادر"><i class="fas fa-images"></i> صورة متعددة المصادر</li>
+            <li data-command="اتجاه النص: 'rtl'"><i class="fas fa-align-right"></i> اتجاه النص</li>
+            <li data-command="التدقيق الإملائي: 'true'"><i class="fas fa-spell-check"></i> التدقيق الإملائي</li>
+            <li data-command="اختصار: 'النص'"><i class="fas fa-asterisk"></i> اختصار</li>
+            <li data-command="معطل"><i class="fas fa-ban"></i> معطل</li>
+            <li data-command="صورة الغلاف: 'poster.jpg'"><i class="fas fa-image"></i> صورة الغلاف</li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="editor">
+            <textarea id="editor" placeholder="اكتب الأوامر بالعربية هنا..."></textarea>
+        </div>
+        <div class="buttons">
+            <button id="convert">ترجمة</button>
+            <button id="checkErrors">كشف الأخطاء</button>
+            <button id="fixErrors">إصلاح الأخطاء</button>
+        </div>
+        <div class="output">
+            <h3>الكود المترجم:</h3>
+            <pre id="output"></pre>
+            <button class="copy-btn" id="copyCode">نسخ الكود</button>
+            <button class="download-btn" id="downloadCode">تنزيل الكود</button>
+        </div>
+    </div>
+
+    <script>
+        // إضافة النصوص إلى محرر النصوص عند النقر
+        document.querySelectorAll('.sidebar ul li').forEach(item => {
+            item.addEventListener('click', function () {
+                const command = this.getAttribute('data-command');
+                const editor = document.getElementById('editor');
+                editor.value += command + '\n';
+            });
+        });
+
+        // تحويل الأوامر إلى HTML
+        document.getElementById('convert').addEventListener('click', function () {
+            const input = document.getElementById('editor').value;
+            const output = input
+                .replace(/عنوان رئيسي/g, '<h1>عنوان رئيسي</h1>')
+                .replace(/فقرة/g, '<p>فقرة</p>')
+                .replace(/رابط: '(.*?)'/g, '<a href="$1">$1</a>')
+                .replace(/صورة: '(.*?)'/g, '<img src="$1" alt="صورة">')
+                .replace(/صوت: '(.*?)'/g, '<audio controls><source src="$1" type="audio/mpeg"></audio>')
+                .replace(/بدء: '(.*?)'/g, '<button>بدء</button>')
+                .replace(/قابل للتعديل: '(.*?)'/g, '<input type="text" value="$1">')
+                .replace(/مطلوب/g, '<input type="checkbox" required>')
+                .replace(/تحديد: '(.*?)'/g, '<span>$1</span>')
+                .replace(/تحميل بطيء: '(.*?)'/g, '<img src="$1" loading="lazy">')
+                .replace(/مفتاح: '(.*?)'/g, '<input type="text" value="$1">')
+                .replace(/تفاصيل وملخص/g, '<details><summary>ملخص</summary><p>تفاصيل</p></details>')
+                .replace(/قبول: '(.*?)'/g, '<input type="checkbox" accept="$1">')
+                .replace(/صورة متعددة المصادر/g, '<picture><source srcset="image1.jpg" type="image/jpeg"><img src="image1.jpg" alt="صورة"></picture>')
+                .replace(/اتجاه النص: '(.*?)'/g, '<div style="direction: rtl;">نص</div>')
+                .replace(/التدقيق الإملائي: '(.*?)'/g, '<input type="text" spellcheck="$1">')
+                .replace(/اختصار: '(.*?)'/g, '<abbr title="$1">$1</abbr>')
+                .replace(/معطل/g, '<button disabled>معطل</button>')
+                .replace(/صورة الغلاف: '(.*?)'/g, '<img src="$1" class="cover-image">');
+
+            document.getElementById('output').textContent = output;
+        });
+
+        // نسخ الكود
+        document.getElementById('copyCode').addEventListener('click', function () {
+            const output = document.getElementById('output').textContent;
+            navigator.clipboard.writeText(output);
+        });
+
+        // تنزيل الكود
+        document.getElementById('downloadCode').addEventListener('click', function () {
+            const output = document.getElementById('output').textContent;
+            const blob = new Blob([output], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'code.html';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        // تبديل الوضع بين الليلي والنهاري
+        document.getElementById('themeToggle').addEventListener('click', function () {
+            document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('light-mode');
+        });
+    </script>
+
+</body>
+
+</html>

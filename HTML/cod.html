@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مترجم HTML بالعربية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* نفس التنسيقات الموجودة سابقًا */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* ليلي */
+        .dark-mode {
+            background-color: #1e1e2f;
+            color: #ececeb;
+        }
+
+        /* نهاري */
+        .light-mode {
+            background-color: #fcfff8;
+            color: #333;
+        }
+
+        .sidebar {
+            width: 20%;
+            background-color: #282a36;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .main-content {
+            width: 80%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            font-size: 16px;
+            padding: 10px;
+            border: 1px solid #6272a4;
+            border-radius: 5px;
+            resize: none;
+            background-color: #282a36;
+            color: #f8f8f2;
+        }
+
+        .output {
+            padding: 20px;
+            background-color: #44475a;
+            border: 1px solid #6272a4;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 300px;
+            border: 1px solid #6272a4;
+            background-color: #fff;
+        }
+    </style>
+</head>
+
+<body class="dark-mode">
+
+    <div class="sidebar">
+        <h2>HTML بالعربية</h2>
+        <ul>
+            <li data-command="عنوان رئيسي"><i class="fas fa-heading"></i> عنوان رئيسي</li>
+            <li data-command="فقرة"><i class="fas fa-paragraph"></i> فقرة</li>
+            <li data-command="رابط: 'رابط هنا'"><i class="fas fa-link"></i> رابط</li>
+            <!-- باقي الأوامر كما في الكود السابق -->
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <textarea id="editor" placeholder="اكتب الأوامر بالعربية هنا..."></textarea>
+        <div class="output">
+            <h3>المعاينة:</h3>
+            <iframe id="preview"></iframe>
+        </div>
+    </div>
+
+    <script>
+        const editor = document.getElementById('editor');
+        const preview = document.getElementById('preview');
+
+        // تحويل الأوامر إلى HTML
+        function convertToHTML(input) {
+            return input
+                .replace(/عنوان رئيسي/g, '<h1>عنوان رئيسي</h1>')
+                .replace(/فقرة/g, '<p>فقرة</p>')
+                .replace(/رابط: '(.*?)'/g, '<a href="$1">$1</a>')
+                .replace(/صورة: '(.*?)'/g, '<img src="$1" alt="صورة">');
+            // أضف المزيد من التحويلات هنا
+        }
+
+        // تحديث المعاينة أثناء الكتابة
+        editor.addEventListener('input', () => {
+            const input = editor.value;
+            const output = convertToHTML(input);
+
+            // تحديث محتوى iframe
+            const previewDoc = preview.contentDocument || preview.contentWindow.document;
+            previewDoc.open();
+            previewDoc.write(output);
+            previewDoc.close();
+        });
+
+        // إضافة الأوامر إلى المحرر عند النقر
+        document.querySelectorAll('.sidebar ul li').forEach(item => {
+            item.addEventListener('click', function () {
+                const command = this.getAttribute('data-command');
+                editor.value += command + '\n';
+                editor.dispatchEvent(new Event('input')); // لتحديث المعاينة فورًا
+            });
+        });
+    </script>
+
+</body>
+
+</html>
